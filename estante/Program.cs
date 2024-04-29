@@ -47,7 +47,7 @@ Book createBook()
 void displayAllBooks()
 {
     for (int i = 0; i < BOOKCASE_SIZE; i++)
-        if (bookcase[i] != null)
+        if (bookExists(i))
             displayBook(i);
 }
 
