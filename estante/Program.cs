@@ -12,8 +12,15 @@
     return value;
 }
 
+void waitForAnyKey()
+{
+    Console.WriteLine("Pressione qualquer tecla para continuar.");
+    Console.ReadKey();
+}
+
 int BOOKCASE_SIZE = 10;
 Book[] bookcase = new Book[BOOKCASE_SIZE];
+int lastBookIndex = 0;
 
 Book createBook()
 {
@@ -44,11 +51,37 @@ Book createBook()
     return book;
 }
 
+bool bookExists(int bookIndex)
+{
+    return bookcase[bookIndex] != null;
+}
+
+bool isBookcaseEmpty()
+{
+    return !bookExists(0);
+}
+
 void displayAllBooks()
 {
+    Console.Clear();
+
+    if (isBookcaseEmpty())
+    {
+        Console.WriteLine("Estante está vazia.\n");
+        waitForAnyKey();
+
+        return;
+    }
+
     for (int i = 0; i < BOOKCASE_SIZE; i++)
-        if (bookExists(i))
-            displayBook(i);
+    {
+        if (!bookExists(i))
+            break;
+
+        displayBook(i);
+    }
+
+    waitForAnyKey();
 }
 
 void displayBook(int bookIndex)
@@ -56,24 +89,54 @@ void displayBook(int bookIndex)
     Console.WriteLine($"\n{bookIndex + 1}º LIVRO:\n{bookcase[bookIndex]}\n");
 }
 
-bool bookExists(int bookIndex)
+void addBooksToBookcase()
 {
-    return bookcase[bookIndex] != null;
+    Console.Clear();
+
+    int quantityOfBooksToRegister = inputPositiveInteger($"Digite a quantidade de livros que deseja registrar (espaço para mais {BOOKCASE_SIZE - lastBookIndex}): ", max: BOOKCASE_SIZE - lastBookIndex);
+
+    for (int i = 0; i < quantityOfBooksToRegister; i++)
+        bookcase[lastBookIndex++] = createBook();
 }
 
-int quantityOfBooksToRegister = inputPositiveInteger("Digite a quantidade de livros que deseja registrar (no máximo 10): ", BOOKCASE_SIZE);
+void searchSpecificBook()
+{
+    Console.Clear();
 
-for (int i = 0; i < quantityOfBooksToRegister; i++)
-    bookcase[i] = createBook();
+    if (isBookcaseEmpty())
+    {
+        Console.WriteLine("Estante está vazia.\n");
+        waitForAnyKey();
 
-int index = inputPositiveInteger("Digite zero para imprimir todos os livros ou o índice para imprimir um livro específico: ", BOOKCASE_SIZE, 0);
+        return;
+    }
 
-while (index > 0 && !bookExists(index - 1))
-    index = inputPositiveInteger("Livro inexistente, tente outro índice ou digite 0 para imprimir todos: ", BOOKCASE_SIZE, 0);
+    int index = inputPositiveInteger("Digite o índice para imprimir um livro específico: ", BOOKCASE_SIZE, 1);
 
-Console.WriteLine();
+    while (!bookExists(index - 1))
+        index = inputPositiveInteger("Livro inexistente, tente outro índice para imprimir todos: ", BOOKCASE_SIZE, 1);
 
-if (index == 0)
-    displayAllBooks();
-else
     displayBook(index - 1);
+    waitForAnyKey();
+}
+
+int selectOperationMenu()
+{
+    Console.Clear();
+    Console.WriteLine("[ 1 ] Adicionar livros à estante\n[ 2 ] Imprimir estante\n[ 3 ] Imprimir livro específico\n[ 4 ] Sair");
+    return inputPositiveInteger("Escolha sua opção: ", max: 4, min: 1);
+}
+
+while (true)
+{
+    int operation = selectOperationMenu();
+
+    if (operation == 1)
+        addBooksToBookcase();
+    else if (operation == 2)
+        displayAllBooks();
+    else if (operation == 3)
+        searchSpecificBook();
+    else
+        break;
+}

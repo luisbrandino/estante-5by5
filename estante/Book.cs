@@ -1,12 +1,27 @@
 ﻿public class Book
 {
-    public string title;
-    public string author;
-    public DateOnly releaseDate;
-    public string publisher;
-    public string edition;
-    public string ISBN;
-    public int pages;
+    string title;
+    string author;
+    DateOnly releaseDate;
+    string publisher;
+    string edition;
+    string ISBN;
+    int pages;
+
+    public Book()
+    {
+        
+    }
+    public Book(string title, string author, DateOnly releaseDate, string publisher, string edition, string ISBN, int pages)
+    {
+        this.title = title;
+        this.author = author;
+        this.releaseDate = releaseDate;
+        this.publisher = publisher;
+        this.edition = edition;
+        this.ISBN = ISBN;
+        this.pages = pages;
+    }
 
     public void SetTitle(string title) { this.title = title; }
 
