@@ -18,7 +18,7 @@ void waitForAnyKey()
     Console.ReadKey();
 }
 
-int MAX_BOOKS_AUTHOR = 3;
+int MAX_BOOKS_AUTHORS = 3;
 int BOOKCASE_SIZE = 10;
 Book[] bookcase = new Book[BOOKCASE_SIZE];
 int lastBookIndex = 0;
@@ -30,7 +30,7 @@ Book createBook()
     Console.Write("\nInforme o título do livro: ");
     book.SetTitle(Console.ReadLine());
 
-    int totalAuthors = inputPositiveInteger("Informe a quantidade de autores (máximo 3): ", min: 1, max: MAX_BOOKS_AUTHOR);
+    int totalAuthors = inputPositiveInteger("Informe a quantidade de autores (máximo 3): ", min: 1, max: MAX_BOOKS_AUTHORS);
     string[] authors = new string[totalAuthors];
 
     for (int i = 0; i < totalAuthors; i++)
